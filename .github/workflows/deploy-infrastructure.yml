@@ -44,6 +44,6 @@ jobs:
           inlineScript: |
             az deployment group validate \
               --name validate-${{ github.run_id }} \
-              -- resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
+              --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
               --location ${{ vars.AZURE_LOCATION }} \
               --template-file infrastructure/main.bicep
