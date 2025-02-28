@@ -46,3 +46,4 @@ jobs:
               --name validate-${{ github.run_id }} \
               --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
               --template-file infrastructure/main.bicep
+              --parameters main.development.bicepparam
