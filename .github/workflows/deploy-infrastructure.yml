@@ -30,8 +30,3 @@ jobs:
         with:
           inlineScript: |
             az bicep build --file infrastructure/main.bicep
-
-  deploy:
-    name: Deploy Infrastructure
-    runs-on: ubuntu-latest
-    needs: validate
