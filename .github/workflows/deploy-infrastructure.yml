@@ -26,10 +26,10 @@ jobs:
     name: Validate IaC
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Authenticate with Azure
+      - name: Azure Login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -57,10 +57,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: validate
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Authenticate with Azure
+      - name: Azure Login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -76,3 +76,31 @@ jobs:
               --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
               --template-file ${{ env.TEMPLATE_PATH }} \
               --parameters ${{ env.PARAMETERS_PATH }}
+
+  deploy:
+    name: Deploy Infrastructure
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: deploy-dry-run
+    environment: Development
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Infrastructure
+        uses: Azure/cli@v2
+        with:
+          inlineScript: |
+            az deployment group create \
+              --name deploy-${{ github.run_id }} \
+              --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
+              --template-file ${{ env.TEMPLATE_PATH }} \
+              --parameters ${{ env.PARAMETERS_PATH }}
+
