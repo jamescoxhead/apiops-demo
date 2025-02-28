@@ -17,6 +17,10 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  TEMPLATE_PATH: infrastructure/main.bicep
+  PARAMETERS_PATH: infrastructure/main.development.bicepparam
+
 jobs:
   validate:
     name: Validate IaC
@@ -36,7 +40,7 @@ jobs:
         uses: Azure/cli@v2
         with:
           inlineScript: |
-            az bicep build --file infrastructure/main.bicep
+            az bicep build --file ${{ env.TEMPLATE_PATH }}
 
       - name: Bicep Validate
         uses: Azure/cli@v2
@@ -45,8 +49,8 @@ jobs:
             az deployment group validate \
               --name validate-${{ github.run_id }} \
               --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
-              --template-file infrastructure/main.bicep
-              --parameters main.development.bicepparam
+              --template-file ${{ env.TEMPLATE_PATH }} \
+              --parameters ${{ env.PARAMETERS_PATH }}
 
   deploy-dry-run:
     name: Deploy Infrastructure (Dry Run)
@@ -70,5 +74,5 @@ jobs:
             az deployment group what-if \
               --name whatif-${{ github.run_id }} \
               --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
-              --template-file infrastructure/main.bicep \
-              --parameters main.development.bicepparam
+              --template-file ${{ env.TEMPLATE_PATH }} \
+              --parameters ${{ env.PARAMETERS_PATH }}
