@@ -95,7 +95,7 @@ jobs:
 
       - name: Publish to Task Summary
         env:
-          SUMMARY: ${{ steps.whatif-stringify.summary }}
+          SUMMARY: ${{ steps.whatif-stringify.outputs.summary }}
         run: |
           echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
 
@@ -103,7 +103,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         env:
-          SUMMARY: ${{ steps.whatif-stringify.summary }}
+          SUMMARY: ${{ steps.whatif-stringify.outputs.summary }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN}}
           script: |
