@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "scope": "/subscriptions/2b475053-e4b9-4770-a7c9-d96d7fcc2f21/resourceGroups/uks-jc-apiopsdemo/providers/Microsoft.ApiManagement/service/uks-jc-apiopsdemo-apim-01/products/starter",
+    "allowTracing": false,
+    "ownerId": "/subscriptions/2b475053-e4b9-4770-a7c9-d96d7fcc2f21/resourceGroups/uks-jc-apiopsdemo/providers/Microsoft.ApiManagement/service/uks-jc-apiopsdemo-apim-01/users/1",
+    "state": "active"
+  }
+}
